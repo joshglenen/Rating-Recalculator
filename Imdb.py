@@ -7,27 +7,27 @@ from bs4 import BeautifulSoup #html parser
 
 #temporary algorythm to determine better score
 def adjustExtremes( num10, num1, numPos, numNeg, numTotal):
-    if (num1+num10) / numTotal > 0.5:
+    if (num1+num10) / numTotal > 0.33:
         return removeExtremes( num10, num1, numPos, numNeg, numTotal)
-    elif numPos > numNeg:
-        print("Overall positive reception")
+    if numPos > numNeg:
+        print("Overall positive reception:")
+    else:
+        print("Overall negative reception:")
+    if (numPos/numTotal) > 0.1:
         numTotal = numTotal - num10
         num10  = math.floor(num10/2)
         numTotal = numTotal + num10
-        num1 = 0
-    elif numPos < numNeg:
-        print("Overall negative reception")
+    if (numNeg/numTotal) > 0.1:
         numTotal = numTotal - num1
         num1 = math.floor(num1/2)
-        numTotal = numTotal + num10
-        num10 = 0
+        numTotal = numTotal + num1
     toReturn = [num10,num1,numTotal]
     return toReturn
 
 def removeExtremes( num10, num1, numPos, numNeg, numTotal):
-    print("10's and 1's were removed")
+    print("Vote weights were corrected:")
     MaxMin = numTotal - num10 - num1 
-    toReturn = [num10,num1,MaxMin]
+    toReturn = [0,0,MaxMin]
     return toReturn
 
 #average calculation
@@ -74,7 +74,6 @@ def findMMM(array, total):
 string = input("Paste the URL of the title: ")
 idImdb = string.split('/', 5)
 string = "http://www.imdb.com/title/" + idImdb[4] + "/ratings?"
-print(string)
                             
 #scrapes the html                  
 myRequest = requests.get(string)
