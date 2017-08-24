@@ -1,5 +1,5 @@
 # Rating Recalculator
 
-This program uses python 3 to take an imdb page and recalculate the ratings to reduce bias and bad ratings. 
+This program uses Python 3.6, flask, JavaScript, HTML, CSS, and jQuery. 
 
-The current algorithm is basic, and the application is not yet finished.
+It will determine a rating for a film or tv show based on published reviews and a simple algorithm.
