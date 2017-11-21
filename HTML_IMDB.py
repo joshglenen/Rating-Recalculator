@@ -74,32 +74,31 @@ def findMMM(array, total):
 
 
 def getRatings(title):
-    # takes an imdb url and finds the id, then rebuilds the url for consistancy
+    # takes an imdb id and name and returns a new rating
 
-    string = "http://www.imdb.com/title/" + title[0] + "/ratings?"
-
-    # scrapes the html
+    string = "http://www.imdb.com/title/" + title[0] + "/ratings"
     myRequest = requests.get(string)
     myContent = myRequest.content
     myParsed = BeautifulSoup(myContent, "html.parser")
-    div = myParsed.find('div', {"id": 'tn15content'})
+    div = myParsed.find('div', {"class": 'title-ratings-sub-page'})
     table = div.find_all('table')
-    lis = table[0].find_all("td", {"align": "right"})
+    lis = table[0].find_all("div", {"class": "leftAligned"})
 
     # organizes filtered data
-    x = 0
-    y = 0
+    y = -1
     num = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for tag in lis:
-        if x % 2 != 0:
+        ## for debugging purposes ## print(tag.text)
+        if (y >= 0) & (y <= 9):
             try:
-                num[y] = int(tag.text)
+                stringBuffer = tag.text
+                num[y] = int(stringBuffer.replace(',', ''))
+
             except AttributeError:
                 pass
-            y = y + 1
-        x = x + 1
+        y = y+1
 
-    # Operations with the data, open for customization
+    # Operations with the data, to customize, alter adjustExtremes function
     numPos = num[0] + num[1] + num[2] + num[3] + num[4]
     numNeg = num[9] + num[8] + num[7] + num[6] + num[5]
     numTot = numPos + numNeg
@@ -116,14 +115,12 @@ def findID(stringIN, index):
     myContent = myRequest.content
     myParsed = BeautifulSoup(myContent, "html.parser")
     td = myParsed.find_all('td', {"class": 'result_text'})
-    # tt = myParsed.find_all('h3', {"class": 'findSectionHeader'})
-    myID1 = str(td[index])
-    myID1 = myID1.split('/', 3)
+                                            # tt = myParsed.find_all('h3', {"class": 'findSectionHeader'})
     try:
+        myID1 = str(td[index])
+        myID1 = myID1.split('/', 3)
         name = td[index].text.split(' aka', 2)
-    except ValueError:
-        pass
-    return getRatings([myID1[2], name[0]])
+        return getRatings([myID1[2], name[0]])
 
-
-
+    except IndexError:
+        return "No title found! Did you check your spelling?"

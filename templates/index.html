@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
 <head >
     <title>Recalculator</title>
-    <link href="../static/bootstrap.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 	<meta name="josh" content="main_page">
     <script src="/static/js/jquery-3.2.1.min.js"></script>
     <link href="../static/padding.css" rel="stylesheet">
 	  <!--[if lt IE 9]>
-		@Thanks to getbootstrap.com for the stylesheet which was copied to remove security warning
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
 	  <![endif]-->
 </head>
@@ -26,9 +23,9 @@
                 type: "POST",
                 success: function(result) {
                    document.getElementById("myOutput").innerHTML = result;
-                	myFunction();
+                   myFunction();
                 },
-                error: function(result) {
+                error: function() {
                     document.getElementById("myOutput").innerHTML.text = 'No title found';
                 }
             });
